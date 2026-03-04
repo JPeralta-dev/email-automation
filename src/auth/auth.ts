@@ -69,44 +69,8 @@ export const ReplaceTokens = async (code: string) => {
   saveToken(tokenData);
 };
 
-// export async function getValidAccessToken(): Promise<string> {
-//   if (!fs.existsSync(TOKEN_PATH)) {
-//     throw new Error("Token no encontrado. Ejecuta login primero.");
-//   }
-
-//   const accounts = await pca.getTokenCache().getAllAccounts();
-//   console.log("Accounts:", accounts);
-//   if (accounts.length === 0) {
-//     console.log("⚠ No hay sesión. Iniciando Device Login...");
-
-//     const deviceCodeRequest = {
-//       scopes: ["Mail.Read", "Mail.Send", "offline_access"],
-//       deviceCodeCallback: (response: any) => {
-//         console.log(response.message);
-//       },
-//     };
-
-//     const response = await pca.acquireTokenByDeviceCode(deviceCodeRequest);
-//     if (response?.accessToken === undefined) {
-//       console.log("⚠ No hay token.");
-//       return "";
-//     }
-
-//     return response.accessToken;
-//   }
-
-//   const silentRequest = {
-//     account: accounts[0],
-//     scopes: ["Mail.Read", "Mail.Send"],
-//   };
-
-//   const response = await pca.acquireTokenSilent(silentRequest);
-
-//   // 🔥 IMPORTANTE: guardar siempre la nueva respuesta
-//   fs.writeFileSync(TOKEN_PATH, JSON.stringify(response, null, 2));
-
-//   return response.accessToken;
-// }
+/// Jonatahnhernandez@analistabigdatacacc.onmicrosoft.com
+//Jhernandez10
 
 export async function getValidAccessToken() {
   const accounts = await pca.getAllAccounts();
