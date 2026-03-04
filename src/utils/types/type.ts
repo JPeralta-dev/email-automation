@@ -8,6 +8,10 @@ export interface Mail {
   id: string;
   subject: string;
   receivedDateTime: string;
+  body: {
+    contentType: string;
+    content: string;
+  };
   from: {
     emailAddress: {
       address: string;

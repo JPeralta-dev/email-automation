@@ -39,7 +39,7 @@ const cachePlugin = {
 const config = {
   auth: {
     clientId: env.CLIENT_ID,
-    authority: `https://login.microsoftonline.com/common`,
+    authority: `https://login.microsoftonline.com/${env.TENANT_ID}`,
   },
   cache: {
     cachePlugin,

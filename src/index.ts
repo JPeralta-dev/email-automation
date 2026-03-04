@@ -13,7 +13,11 @@ const KEYWORD = [
   "573135841053",
   "573124144099",
   "573173645711",
-  "573183363756 ,573183363767, 573157167788, 573233052259, 573165278214",
+  "573183363756",
+  "573183363767",
+  "573157167788",
+  "573233052259",
+  "573165278214",
 ];
 const DESTINATION_EMAIL = "boottic@gmail.com";
 
@@ -35,9 +39,10 @@ async function main() {
       KEYWORD.some((k) => email.subject.includes(k))
     ) {
       await forwardMail(
-        `Reenvío: ${email.subject}`,
-        "Correo reenviado automáticamente",
-        `${DESTINATION_EMAIL}`,
+        `Fw: ${email.subject}`,
+        email.body.content,
+        DESTINATION_EMAIL,
+        email.id,
       );
 
       await moveEmail(email.id);

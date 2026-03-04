@@ -8,7 +8,12 @@
     "dev": "tsx watch src/index.ts",
     "login" : "tsx watch src/login.ts",
     "build":"tsc",
-    "start" : "node ./dist/index.js"
+    "start" : "node ./dist/index.js",
+    "build:start": "tsc && pm2 start ecosystem.config.js",
+    "pm2:stop": "pm2 stop email-automation",
+    "pm2:restart": "pm2 restart email-automation",
+    "pm2:logs": "pm2 logs email-automation",
+    "pm2:status": "pm2 status"
   },
   "repository": {
     "type": "git",

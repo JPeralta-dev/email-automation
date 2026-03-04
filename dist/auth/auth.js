@@ -38,7 +38,7 @@ const cachePlugin = {
 const config = {
     auth: {
         clientId: env_1.env.CLIENT_ID,
-        authority: `https://login.microsoftonline.com/common`,
+        authority: `https://login.microsoftonline.com/${env_1.env.TENANT_ID}`,
     },
     cache: {
         cachePlugin,
@@ -64,6 +64,7 @@ const ReplaceTokens = async (code) => {
 exports.ReplaceTokens = ReplaceTokens;
 async function getValidAccessToken() {
     const accounts = await exports.pca.getAllAccounts();
+    console.log(accounts);
     if (accounts.length === 0) {
         throw new Error("No hay cuenta logueada.");
     }
@@ -72,6 +73,7 @@ async function getValidAccessToken() {
         scopes: ["Mail.Read", "Mail.Send", "Mail.ReadWrite", "offline_access"],
     });
     console.log("Token obtenido correctamente");
+    console.log(response);
     return response.accessToken;
 }
 async function refreshAccessToken() {
