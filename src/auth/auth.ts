@@ -71,7 +71,7 @@ export const ReplaceTokens = async (code: string) => {
 
 export async function getValidAccessToken() {
   const accounts = await pca.getAllAccounts();
-  console.log(accounts);
+  //console.log(accounts);
 
   if (accounts.length === 0) {
     throw new Error("No hay cuenta logueada.");
@@ -83,7 +83,7 @@ export async function getValidAccessToken() {
   });
 
   console.log("Token obtenido correctamente");
-  console.log(response);
+  //console.log(response);
 
   return response.accessToken;
 }

@@ -51,8 +51,8 @@ async function main() {
 }
 
 async function start() {
-  console.log("estoy pasando por aca");
-  console.log(tokenExists());
+  console.log("Se Levanto el servidor correctamente");
+  //console.log(tokenExists());
 
   if (!tokenExists()) {
     console.log("No hay sesión, iniciando login...");

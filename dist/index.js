@@ -36,8 +36,8 @@ async function main() {
     }
 }
 async function start() {
-    console.log("estoy pasando por aca");
-    console.log((0, tokenStorage_1.tokenExists)());
+    console.log("Se Levanto el servidor correctamente");
+    //console.log(tokenExists());
     if (!(0, tokenStorage_1.tokenExists)()) {
         console.log("No hay sesión, iniciando login...");
         await (0, deviceLogin_1.deviceLogin)();
