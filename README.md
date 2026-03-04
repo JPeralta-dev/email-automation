@@ -31,7 +31,7 @@ Cada 60 segundos la app:
 
 | Franja | Inicio | Fin |
 |---|---|---|
-| Mañana | 5:45 AM | 8:50 AM |
+| Mañana | 5:45 AM | 6:50 AM |
 | Tarde | 5:45 PM | 6:50 PM |
 
 ### Keywords monitoreadas
