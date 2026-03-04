@@ -1,0 +1,37 @@
+{
+  "name": "email-automation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "login" : "tsx watch src/login.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JPeralta-dev/email-automation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JPeralta-dev/email-automation/issues"
+  },
+  "homepage": "https://github.com/JPeralta-dev/email-automation#readme",
+  "dependencies": {
+    "@azure/msal-node": "^5.0.6",
+    "axios": "^1.13.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "nodemailer": "^8.0.1",
+    "typescript": "^5.9.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/node": "^25.3.3",
+    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.21.0"
+  }
+}
