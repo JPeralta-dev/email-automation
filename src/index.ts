@@ -15,7 +15,7 @@ const KEYWORD = [
   "573173645711",
   "573183363756 ,573183363767, 573157167788, 573233052259, 573165278214",
 ];
-const DESTINATION_EMAIL = "legromanuel29@gmail.com";
+const DESTINATION_EMAIL = "boottic@gmail.com";
 
 async function main() {
   const todayStart = new Date();
@@ -46,7 +46,10 @@ async function main() {
 }
 
 async function start() {
-  if (!tokenExists) {
+  console.log("estoy pasando por aca");
+  console.log(tokenExists());
+
+  if (!tokenExists()) {
     console.log("No hay sesión, iniciando login...");
     await deviceLogin();
   }

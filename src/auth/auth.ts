@@ -69,11 +69,9 @@ export const ReplaceTokens = async (code: string) => {
   saveToken(tokenData);
 };
 
-/// Jonatahnhernandez@analistabigdatacacc.onmicrosoft.com
-//Jhernandez10
-
 export async function getValidAccessToken() {
   const accounts = await pca.getAllAccounts();
+  console.log(accounts);
 
   if (accounts.length === 0) {
     throw new Error("No hay cuenta logueada.");
@@ -85,6 +83,7 @@ export async function getValidAccessToken() {
   });
 
   console.log("Token obtenido correctamente");
+  console.log(response);
 
   return response.accessToken;
 }

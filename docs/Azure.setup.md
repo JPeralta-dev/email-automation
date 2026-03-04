@@ -23,9 +23,11 @@ Guía completa para registrar y configurar la aplicación en Azure AD empresaria
 
 1. Ingresa a [https://portal.azure.com](https://portal.azure.com) con una cuenta que tenga permisos de administrador en el tenant empresarial.
 
-2. En el buscador superior escribe **"App registrations"** y selecciónalo.
+2. En el menú lateral izquierdo o en el buscador superior, busca y selecciona **"Microsoft Entra ID"**.
 
-3. Haz clic en **"+ New registration"**.
+3. En el menú izquierdo de Microsoft Entra ID, selecciona **"App registrations"**.
+
+4. Haz clic en **"+ New registration"**.
 
 4. Completa el formulario:
    - **Name:** `email-automation` (o el nombre que prefieras)
