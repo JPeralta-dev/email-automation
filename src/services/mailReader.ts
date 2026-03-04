@@ -20,7 +20,7 @@ export async function getEmailsFromTimeRange(
   });
 
   console.log(startISO);
-  console.log(response);
+  //console.log(response);
 
   return response.data.value; // 🔥 IMPORTANTE
 }
