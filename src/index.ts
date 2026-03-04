@@ -1,3 +1,4 @@
+import { boolean } from "zod";
 import { ReplaceTokens } from "./auth/auth";
 import { moveEmail } from "./services/mailMove";
 import { getEmailsFromTimeRange } from "./services/mailReader";
@@ -13,7 +14,11 @@ async function main() {
   todayStart.setHours(0, 0, 0, 0);
 
   const emails = await getEmailsFromTimeRange(todayStart.toISOString()); // obtenemos emails totales en ese rango
+  console.log(emails);
 
+  if (emails === false || emails === true) {
+    return;
+  }
   for (const email of emails) {
     const reviced = new Date(email.receivedDateTime);
 
@@ -28,5 +33,5 @@ async function main() {
     }
   }
 }
-
+main();
 setInterval(main, 60000);

@@ -1,20 +1,10 @@
-import { PublicClientApplication } from "@azure/msal-node";
 import fs from "fs";
+import { pca } from "./auth";
 import dotenv from "dotenv";
-import { env } from "../config/env";
 
 dotenv.config();
 
 const TOKEN_PATH = "./storage/token.json";
-
-const config = {
-  auth: {
-    clientId: process.env.CLIENT_ID!,
-    authority: `https://login.microsoftonline.com/${env.TENANT_ID}`,
-  },
-};
-
-const pca = new PublicClientApplication(config);
 
 export async function deviceLogin() {
   const deviceCodeRequest = {

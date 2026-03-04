@@ -4,8 +4,8 @@ export function isWithinTimeRange(date: Date) {
 
   const totalMinutes = hours * 60 + minutes;
 
-  const morningStart = 5 * 60 + 45;
-  const morningEnd = 8 * 60 + 50;
+  const morningStart = 9 * 60 + 50;
+  const morningEnd = 10 * 60 + 50;
 
   const afternoonStart = 17 * 60 + 45;
   const afternoonEnd = 18 * 60 + 50;

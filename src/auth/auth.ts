@@ -9,14 +9,30 @@ interface TokenResponse {
   refresh_token: string;
   expires_in: number;
 }
-
-const config = {
-  auth: {
-    clientId: env.CLIENT_ID!,
-    authority: `https://login.microsoftonline.com/${env.TENANT_ID}`,
+const cachePlugin = {
+  beforeCacheAccess: async (cacheContext: any) => {
+    if (fs.existsSync(TOKEN_PATH)) {
+      const cacheData = fs.readFileSync(TOKEN_PATH, "utf-8");
+      cacheContext.tokenCache.deserialize(cacheData);
+    }
+  },
+  afterCacheAccess: async (cacheContext: any) => {
+    if (cacheContext.cacheHasChanged) {
+      fs.writeFileSync(TOKEN_PATH, cacheContext.tokenCache.serialize());
+    }
   },
 };
-const pca = new PublicClientApplication(config);
+const config = {
+  auth: {
+    clientId: env.CLIENT_ID,
+    authority: `https://login.microsoftonline.com/${env.TENANT_ID}`,
+  },
+  cache: {
+    cachePlugin,
+  },
+};
+
+export const pca = new PublicClientApplication(config);
 
 const TokenEndpoint = `https://login.microsoftonline.com/${env.TENANT_ID}/oauth2/v2.0/token`;
 export const ReplaceTokens = async (code: string) => {
@@ -39,22 +55,60 @@ export const ReplaceTokens = async (code: string) => {
   saveToken(tokenData);
 };
 
-export async function getValidAccessToken(): Promise<string> {
-  if (!fs.existsSync(TOKEN_PATH)) {
-    throw new Error("Token no encontrado. Ejecuta login primero.");
+// export async function getValidAccessToken(): Promise<string> {
+//   if (!fs.existsSync(TOKEN_PATH)) {
+//     throw new Error("Token no encontrado. Ejecuta login primero.");
+//   }
+
+//   const accounts = await pca.getTokenCache().getAllAccounts();
+//   console.log("Accounts:", accounts);
+//   if (accounts.length === 0) {
+//     console.log("⚠ No hay sesión. Iniciando Device Login...");
+
+//     const deviceCodeRequest = {
+//       scopes: ["Mail.Read", "Mail.Send", "offline_access"],
+//       deviceCodeCallback: (response: any) => {
+//         console.log(response.message);
+//       },
+//     };
+
+//     const response = await pca.acquireTokenByDeviceCode(deviceCodeRequest);
+//     if (response?.accessToken === undefined) {
+//       console.log("⚠ No hay token.");
+//       return "";
+//     }
+
+//     return response.accessToken;
+//   }
+
+//   const silentRequest = {
+//     account: accounts[0],
+//     scopes: ["Mail.Read", "Mail.Send"],
+//   };
+
+//   const response = await pca.acquireTokenSilent(silentRequest);
+
+//   // 🔥 IMPORTANTE: guardar siempre la nueva respuesta
+//   fs.writeFileSync(TOKEN_PATH, JSON.stringify(response, null, 2));
+
+//   return response.accessToken;
+// }
+
+export async function getValidAccessToken() {
+  const accounts = await pca.getAllAccounts();
+  console.log("Accounts:", accounts);
+
+  if (accounts.length === 0) {
+    throw new Error("No hay cuenta logueada.");
   }
 
-  const stored = JSON.parse(fs.readFileSync(TOKEN_PATH, "utf-8"));
+  const response = await pca.acquireTokenSilent({
+    account: accounts[0],
+    scopes: ["Mail.Read"],
+  });
+  console.log(response.accessToken);
 
-  const silentRequest = {
-    account: stored.account,
-    scopes: ["Mail.Read", "Mail.Send"],
-  };
-
-  const response = await pca.acquireTokenSilent(silentRequest);
-
-  // 🔥 IMPORTANTE: guardar siempre la nueva respuesta
-  fs.writeFileSync(TOKEN_PATH, JSON.stringify(response, null, 2));
+  console.log("Token obtenido correctamente");
 
   return response.accessToken;
 }
