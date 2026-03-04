@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getValidAccessToken } from "../auth/auth";
 import { GraphResponse, Mail } from "../utils/types/type";
+
 //import AxiosError from "axios";
 
 export async function getEmailsFromTimeRange(
@@ -8,32 +9,15 @@ export async function getEmailsFromTimeRange(
 ): Promise<Mail[] | boolean> {
   const accessToken = await getValidAccessToken();
   console.log(startISO);
-  const url =
-    `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages` +
-    `?$filter=receivedDateTime ge '${startISO}'` +
-    `&$select=id,subject,receivedDateTime,from`;
+  const filter = encodeURIComponent(`receivedDateTime ge ${startISO}`);
 
-  // const response = await axios.get<GraphResponse<Mail>>(
-  //   "https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages",
-  //   {
-  //     headers: {
-  //       Authorization: `Bearer ${accessToken}`,
-  //     },
-  //     params: {
-  //       $filter: `receivedDateTime ge ${startISO}`,
-  //       $select: "id,subject,receivedDateTime,from",
-  //       $orderby: "receivedDateTime desc",
-  //     },
-  //   },
-  // );
-  const response = await axios.get<GraphResponse<Mail>>(
-    "https://graph.microsoft.com/v1.0/me/messages?$top=5",
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  const url = `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages?$filter=${filter}&$select=id,subject,receivedDateTime,from,body&$orderby=receivedDateTime desc&$top=50`;
+
+  const response = await axios.get<GraphResponse<Mail>>(url, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
     },
-  );
+  });
 
   console.log(startISO);
   console.log(response);
