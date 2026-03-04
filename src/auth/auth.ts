@@ -110,7 +110,6 @@ export const ReplaceTokens = async (code: string) => {
 
 export async function getValidAccessToken() {
   const accounts = await pca.getAllAccounts();
-  console.log("Accounts:", accounts);
 
   if (accounts.length === 0) {
     throw new Error("No hay cuenta logueada.");
@@ -120,7 +119,6 @@ export async function getValidAccessToken() {
     account: accounts[0],
     scopes: ["Mail.Read", "Mail.Send", "Mail.ReadWrite", "offline_access"],
   });
-  console.log(response.accessToken);
 
   console.log("Token obtenido correctamente");
 

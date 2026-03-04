@@ -1,4 +1,7 @@
-export function isWithinTimeRange(date) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.isWithinTimeRange = isWithinTimeRange;
+function isWithinTimeRange(date) {
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const totalMinutes = hours * 60 + minutes;

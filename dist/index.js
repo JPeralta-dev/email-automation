@@ -1,9 +1,11 @@
-import { moveEmail } from "./services/mailMove";
-import { getEmailsFromTimeRange } from "./services/mailReader";
-import { forwardMail } from "./services/mailSender";
-import { isWithinTimeRange } from "./utils/TimeRange";
-import { tokenExists } from "./utils/tokenStorage";
-import { deviceLogin } from "./auth/deviceLogin";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const mailMove_1 = require("./services/mailMove");
+const mailReader_1 = require("./services/mailReader");
+const mailSender_1 = require("./services/mailSender");
+const TimeRange_1 = require("./utils/TimeRange");
+const tokenStorage_1 = require("./utils/tokenStorage");
+const deviceLogin_1 = require("./auth/deviceLogin");
 const KEYWORD = [
     "573234802743",
     "573107241341",
@@ -16,23 +18,23 @@ const DESTINATION_EMAIL = "legromanuel29@gmail.com";
 async function main() {
     const todayStart = new Date();
     todayStart.setHours(0, 0, 0, 0);
-    const emails = await getEmailsFromTimeRange(todayStart.toISOString()); // obtenemos emails totales en ese rango
+    const emails = await (0, mailReader_1.getEmailsFromTimeRange)(todayStart.toISOString()); // obtenemos emails totales en ese rango
     if (emails === false || emails === true) {
         return;
     }
     for (const email of emails) {
         const reviced = new Date(email.receivedDateTime);
-        if (isWithinTimeRange(reviced) &&
+        if ((0, TimeRange_1.isWithinTimeRange)(reviced) &&
             KEYWORD.some((k) => email.subject.includes(k))) {
-            await forwardMail(`Reenvío: ${email.subject}`, "Correo reenviado automáticamente", `${DESTINATION_EMAIL}`);
-            await moveEmail(email.id);
+            await (0, mailSender_1.forwardMail)(`Reenvío: ${email.subject}`, "Correo reenviado automáticamente", `${DESTINATION_EMAIL}`);
+            await (0, mailMove_1.moveEmail)(email.id);
         }
     }
 }
 async function start() {
-    if (!tokenExists) {
+    if (!tokenStorage_1.tokenExists) {
         console.log("No hay sesión, iniciando login...");
-        await deviceLogin();
+        await (0, deviceLogin_1.deviceLogin)();
     }
     main();
     setInterval(main, 60000);
