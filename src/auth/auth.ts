@@ -9,11 +9,25 @@ interface TokenResponse {
   refresh_token: string;
   expires_in: number;
 }
+// en auth.ts - corrige el cachePlugin
 const cachePlugin = {
   beforeCacheAccess: async (cacheContext: any) => {
     if (fs.existsSync(TOKEN_PATH)) {
-      const cacheData = fs.readFileSync(TOKEN_PATH, "utf-8");
-      cacheContext.tokenCache.deserialize(cacheData);
+      const raw = fs.readFileSync(TOKEN_PATH, "utf-8");
+      try {
+        const parsed = JSON.parse(raw);
+        // Si tiene la estructura del cache de MSAL directamente
+        const cacheData = parsed.Account ? raw : parsed.msalCache;
+        if (cacheData) {
+          cacheContext.tokenCache.deserialize(
+            typeof cacheData === "string"
+              ? cacheData
+              : JSON.stringify(cacheData),
+          );
+        }
+      } catch (e) {
+        console.error("Error leyendo cache:", e);
+      }
     }
   },
   afterCacheAccess: async (cacheContext: any) => {
@@ -25,7 +39,7 @@ const cachePlugin = {
 const config = {
   auth: {
     clientId: env.CLIENT_ID,
-    authority: `https://login.microsoftonline.com/${env.TENANT_ID}`,
+    authority: `https://login.microsoftonline.com/common`,
   },
   cache: {
     cachePlugin,
@@ -104,7 +118,7 @@ export async function getValidAccessToken() {
 
   const response = await pca.acquireTokenSilent({
     account: accounts[0],
-    scopes: ["Mail.Read"],
+    scopes: ["Mail.Read", "Mail.Send", "Mail.ReadWrite", "offline_access"],
   });
   console.log(response.accessToken);
 

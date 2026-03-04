@@ -1,29 +1,23 @@
 import fs from "fs";
 import { pca } from "./auth";
 import dotenv from "dotenv";
+import { TOKEN_PATH } from "../utils/tokenStorage";
 
 dotenv.config();
 
-const TOKEN_PATH = "./storage/token.json";
-
 export async function deviceLogin() {
   const deviceCodeRequest = {
-    scopes: ["Mail.Read", "Mail.Send", "offline_access"],
+    scopes: ["Mail.Read", "Mail.Send", "Mail.ReadWrite", "offline_access"],
     deviceCodeCallback: (response: any) => {
       console.log("\n🔐 AUTORIZACIÓN REQUERIDA");
       console.log(response.message);
     },
   };
 
-  const response = await pca.acquireTokenByDeviceCode(deviceCodeRequest);
-
-  if (!response) throw new Error("No se pudo obtener token");
-
-  if (!fs.existsSync("./storage")) {
-    fs.mkdirSync("./storage");
+  await pca.acquireTokenByDeviceCode(deviceCodeRequest);
+  if (fs.existsSync(TOKEN_PATH)) {
+    console.log("✅ Sesión guardada correctamente");
+  } else {
+    console.log("❌ No se guardó el cache");
   }
-
-  fs.writeFileSync(TOKEN_PATH, JSON.stringify(response, null, 2));
-
-  console.log("✅ Token guardado correctamente");
 }

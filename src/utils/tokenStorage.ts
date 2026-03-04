@@ -3,6 +3,9 @@ import { TokenData } from "./types/type";
 
 export const TOKEN_PATH = "./storage/token.json";
 
+if (!fs.existsSync("./storage")) {
+  fs.mkdirSync("./storage", { recursive: true });
+}
 export function saveToken(data: TokenData) {
   fs.writeFileSync(TOKEN_PATH, JSON.stringify(data, null, 2));
 }
