@@ -87,27 +87,3 @@ export async function getValidAccessToken() {
 
   return response.accessToken;
 }
-
-async function refreshAccessToken(): Promise<string> {
-  const saved = loadToken();
-
-  const params = new URLSearchParams();
-  params.append("client_id", process.env.CLIENT_ID!);
-  params.append("client_secret", process.env.CLIENT_SECRET!);
-  params.append("refresh_token", saved.refresh_token);
-  params.append("grant_type", "refresh_token");
-
-  const response = await axios.post<TokenResponse>(TokenEndpoint, params);
-
-  const tokenData: TokenData = {
-    access_token: response.data.access_token,
-    refresh_token: response.data.refresh_token || saved.refresh_token,
-    expires_at: Date.now() + response.data.expires_in * 1000,
-  };
-
-  saveToken(tokenData);
-
-  console.log("🔄 Token renovado");
-
-  return tokenData.access_token;
-}

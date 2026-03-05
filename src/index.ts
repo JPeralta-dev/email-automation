@@ -1,5 +1,3 @@
-import { boolean } from "zod";
-import { ReplaceTokens } from "./auth/auth";
 import { moveEmail } from "./services/mailMove";
 import { getEmailsFromTimeRange } from "./services/mailReader";
 import { forwardMail } from "./services/mailSender";
